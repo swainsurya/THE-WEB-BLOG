@@ -7,7 +7,7 @@ import blogRoute from "./api/routes/blog.route.js";
 import cors from "cors";
 
 const app = express();
-const port = process.env.PORT ;
+const port = process.env.PORT || 4000 ;
 connectDB();
 
 app.use(cors({
