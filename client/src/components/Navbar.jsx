@@ -14,6 +14,7 @@ export default function Navbar() {
     localStorage.getItem("theme") === "dark"
   );
   const {isLoggedIn , loginCheck , setUser, user} = useServer() ;
+  console.log(isLoggedIn);
   const handleLogout = async() => {
     await axiosIntance.post("/user/logout") ;
     localStorage.removeItem("protected");
