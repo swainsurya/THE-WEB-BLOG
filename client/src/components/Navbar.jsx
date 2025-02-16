@@ -24,7 +24,7 @@ export default function Navbar() {
   useEffect(()=>{
     loginCheck();
     setUser();
-  },[user, isLoggedIn])
+  },[user])
 
   useEffect(()=>{
     loginCheck();
