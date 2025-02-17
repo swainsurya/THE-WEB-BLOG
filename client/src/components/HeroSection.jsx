@@ -7,7 +7,6 @@ import { axiosIntance } from "@/lib/axiosInstant";
 import { SkeletonBox } from "./SkeletonBox";
 import toast from "react-hot-toast";
 import { useClerk, useUser } from "@clerk/clerk-react";
-import axios from "axios";
 
 export default function HeroSection() {
 
@@ -20,7 +19,7 @@ export default function HeroSection() {
 
   const getAllBlogs = async () => {
     try {
-      const allBlogs = await axios.get("/api/blog/allblogs");
+      const allBlogs = await axiosIntance.get("/blog/allblogs");
       if(!page) setBlogs(allBlogs.data.alls.slice(0, 10));
       else setBlogs(allBlogs.data.alls.slice(10*(page-1), 10*page));
     } catch (error) {
@@ -39,7 +38,7 @@ export default function HeroSection() {
   const handleLike = async (id) => {
     if(isSignedIn){
       try {
-        const req = await axios.post(`/api/blog/like/${id}`)
+        const req = await axiosIntance.post(`/blog/like/${id}`)
         console.log(req)
         toast.success(req.data.message);
       } catch (error) {

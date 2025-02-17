@@ -1,5 +1,9 @@
 import axios from "axios";
 
 export const axiosIntance =  axios.create({
-    baseURL:"/api"
+    baseURL:"/api",
+    withCredentials : true,
+    headers : {
+        "Content-Type" : "application/json"
+    },
 }) ;

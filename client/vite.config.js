@@ -9,13 +9,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server : {
-    proxy : {
-      "/api" : {
-        target : "https://the-web-blog-server.onrender.com",
-        changeOrigin : true,
-        secure : false
-      }
-    }
-  }
 })
