@@ -48,6 +48,9 @@ export const login = async(req, res) => {
         // store cookie in res 
         const token = jwt.sign({userId : isUser._id },process.env.JWT_KEY,{expiresIn : '3d'}) ;
         res.cookie("token" , token,{
+            httpOnly: true,
+            secure: false, // Change to `true` if using HTTPS
+            sameSite: "lax",
             maxAge : 24*60*60*1000,  // valid for 24 hr
         })
 
