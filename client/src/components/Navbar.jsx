@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [us, setUs] = useState(null);
+  const [login, setLogin] = useState(false);
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
@@ -27,9 +28,15 @@ export default function Navbar() {
     setUser();
   },[user])
 
-  useEffect(()=>{
-    loginCheck();
-    setUser();
+ useEffect(()=>{
+    const fetchLogin = async() => {
+      try {
+        const req = await fetch("https://the-web-blog-server.onrender.com/user/isloggedIn"); 
+        setLogin(true);
+      } catch (error) {
+        setLogin(false);
+      }
+    }
   },[])
 
   useEffect(() => {
@@ -65,7 +72,7 @@ export default function Navbar() {
             {/* User  */}
 
             {
-              isLoggedIn ? (
+              login ? (
                 <HoverCard>
                   <HoverCardTrigger>
                     <Button variant="destructive" className="rounded-full text-sm">
