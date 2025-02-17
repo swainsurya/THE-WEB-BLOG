@@ -39,6 +39,7 @@ export default function HeroSection() {
     if(isSignedIn){
       try {
         const req = await axiosIntance.post(`/blog/like/${id}`)
+        console.log(req)
         toast.success(req.data.message);
       } catch (error) {
         toast.error(error.response.data.message)
@@ -77,9 +78,9 @@ export default function HeroSection() {
                       <Button variant="ghost" size="icon">
                         <Eye size={18} />
                       </Button>
-                      <Button onClick={e => handleLike(blog._id)} variant="ghost" size="icon">
+                      <Button onClick={e => handleLike(blog?._id)} variant="ghost" size="icon">
                         <ThumbsUp size={18} />
-                        {blog.likes.length}
+                        {blog?.likes?.length}
                       </Button>
                     </div>
                   </div>

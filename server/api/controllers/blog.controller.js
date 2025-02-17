@@ -119,6 +119,7 @@ export const updateBlog = async (req, res) => {
 export const likePlus = async (req, res) => {
     const { id } = req.params;
     const likedUser = req.auth.userId ;
+    console.log(likedUser)
     try {
         const blog = await blogModel.findById(id);
 
