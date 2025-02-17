@@ -20,8 +20,6 @@ export default function BlogCreator() {
   const [isEdit, setIsEdit] = useState(false);
 
   const { id } = useParams();
-  const {user} = useClerk();
-  console.log(user.id)
 
   const handlePreview = () => {
     setShowPreview(true);
@@ -52,7 +50,6 @@ export default function BlogCreator() {
         description,
         img: imageUrl
       })
-      console.log(req)
       toast.success(req.data.message)
     } catch (error) {
       toast.error("Sever error")
@@ -67,7 +64,6 @@ export default function BlogCreator() {
     try {
       const req = await axiosIntance.put(`/blog/update/${id}`,{title, description, img: imageUrl})
       toast.success(req.data.message);
-      console.log(title, description, imageUrl)
     } catch (error) {
       toast.error("Something went wrong");
     }
