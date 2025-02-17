@@ -49,8 +49,7 @@ export default function BlogCreator() {
       const req = await axiosIntance.post("/blog/create", {
         title,
         description,
-        img: imageUrl,
-        ownerId : user.id
+        img: imageUrl
       })
       console.log(req)
       toast.success(req.data.message)
