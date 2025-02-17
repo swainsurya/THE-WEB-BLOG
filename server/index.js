@@ -12,7 +12,7 @@ connectDB();
 
 app.use(cors(
     {
-        origin: "https://the-web-blog-frontend.onrender.com", // Replace with your frontend URL
+        origin: ["https://the-web-blog-frontend.onrender.com" , "https://the-web-blog.netlify.app"], // Replace with your frontend URL
   methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS", // Allow all methods
   allowedHeaders: "Content-Type,Authorization", // Allow these headers
   credentials: true, // Allow cookies and authentication headers
