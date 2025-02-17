@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosIntance =  axios.create({
-    baseURL:"http://localhost:3000/api",
+    baseURL:"https://the-web-blog-server.onrender.com/api",
     headers : {
         "Content-Type" : "application/json"
     },
