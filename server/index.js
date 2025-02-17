@@ -11,7 +11,7 @@ const port = process.env.PORT || 4000;
 connectDB();
 
 app.use(cors({
-    origin : "http://localhost:5173",
+    origin : "https://the-web-blog.onrender.com",
     methods : ["GET" , "POST" , "DELETE" , "PUT"],
     credentials : true
 }))
