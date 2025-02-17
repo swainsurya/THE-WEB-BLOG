@@ -3,11 +3,18 @@ import "dotenv/config";
 import { connectDB } from "./api/lib/connectDB.js";
 import cookieParser from "cookie-parser";
 import blogRoute from "./api/routes/blog.route.js";
+import cors from "cors";
 import {clerkMiddleware} from "@clerk/express"
 
 const app = express();
 const port = process.env.PORT || 4000;
 connectDB();
+
+app.use(cors({
+    origin : "https://the-web-blog.onrender.com",
+    methods : ["GET" , "POST" , "DELETE" , "PUT"],
+    credentials : true
+}))
 
 app.use(express.json());
 app.use(cookieParser());
