@@ -15,8 +15,8 @@ const App = () => {
         <Route path='/blog/:id' element={<BlogDetailPage/>} />
         <Route path='/:page' element={<HeroSection/>} />
       </Route>
-      <Route element={<ProtectedRoute/>}>
         <Route path='/create' element={<CreateBlogPage/>} />
+      <Route element={<ProtectedRoute/>}>
         <Route path='/ownblogs/:uid' element={<OwnBlogPage/>} />
         <Route path='/edit/:id' element={<CreateBlogPage/>} />
       </Route>
