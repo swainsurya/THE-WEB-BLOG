@@ -18,7 +18,6 @@ createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <Loading>
-
         <App />
       </Loading>
     </ClerkProvider>
