@@ -30,7 +30,7 @@ export default function Navbar() {
   useEffect(()=>{
     const fetchLogin = async() => {
       try {
-        const req = await fetch("https://the-web-blog-server.onrender.com/user/isloggedIn");
+        const req = await fetch("https://the-web-blog-server.onrender.com/user/isloggedIn"); 
         setLogin(true);
       } catch (error) {
         setLogin(false);
