@@ -24,7 +24,7 @@ app.use(clerkMiddleware({
 
 // CORS Middleware
 app.use(cors({
-    origin: ["http://localhost:3000", "https://the-web-blog.onrender.com"], 
+    origin: ["http://localhost:3000", "https://the-web-blog.onrender.com","https://the-web-blogs.netlify.app"], 
     credentials: true,
 }));
 
