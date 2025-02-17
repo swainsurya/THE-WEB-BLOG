@@ -12,8 +12,8 @@ connectDB();
 
 app.use(cors({
     origin : "https://the-web-blog.onrender.com",
+    credentials : true,
     methods : ["GET" , "POST" , "DELETE" , "PUT"],
-    credentials : true
 }))
 
 app.use(express.json());
