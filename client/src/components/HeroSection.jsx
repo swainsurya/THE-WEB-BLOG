@@ -33,7 +33,7 @@ export default function HeroSection() {
   useEffect(() => {
     getAllBlogs();
     if(page == undefined) return;
-  }, [blogs])
+  }, [])
 
   const handleLike = async (id) => {
     if(isSignedIn){
