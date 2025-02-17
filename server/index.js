@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(clerkMiddleware({
-    authorizedParties: "https://the-web-blog.onrender.com"
+    authorizedParties: ["https://the-web-blog.onrender.com"]
 }));
 
 // app.use("/api/user", userRoute)
