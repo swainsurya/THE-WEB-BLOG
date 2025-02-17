@@ -12,15 +12,15 @@ connectDB();
 
 app.use(cors({
     origin : "*",
-    credentials : true
+    credentials : true,
 }))
-
-app.use(express.json());
-app.use(cookieParser());
 
 app.use(clerkMiddleware({
     authorizedParties: ["https://the-web-blog.onrender.com"]
 }));
+app.use(express.json());
+app.use(cookieParser());
+
 
 // app.use("/api/user", userRoute)
 app.use("/api/blog", blogRoute)
