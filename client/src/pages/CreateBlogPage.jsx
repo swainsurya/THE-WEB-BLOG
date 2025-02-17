@@ -52,6 +52,7 @@ export default function BlogCreator() {
         img: imageUrl,
         ownerId : user.id
       })
+      console.log(req)
       toast.success(req.data.message)
     } catch (error) {
       toast.error("Sever error")
