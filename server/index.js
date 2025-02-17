@@ -19,10 +19,12 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(clerkMiddleware({
+    authorizedParties: "https://the-web-blog.onrender.com"
+}));
 
 // app.use("/api/user", userRoute)
 app.use("/api/blog", blogRoute)
-app.use(clerkMiddleware());
 
 app.get("/",(req,res) => {
     res.send("Server ready") ;
