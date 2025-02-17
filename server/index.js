@@ -17,10 +17,6 @@ app.use((req, res, next) => {
 });
 
 // Clerk Middleware (Before CORS)
-app.use(clerkMiddleware({
-    secretKey: process.env.CLERK_SECRET_KEY,  
-    authorizedParties: ["https://the-web-blog.onrender.com"],
-}));
 
 // CORS Middleware
 app.use(cors({
