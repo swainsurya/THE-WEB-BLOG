@@ -10,10 +10,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 connectDB();
 
-app.use(cors({
-    origin : "https://the-web-blog-frontend.onrender.com",
-    credentials : true
-}))
+app.use(cors())
 
 app.use(express.json());
 app.use(cookieParser());
