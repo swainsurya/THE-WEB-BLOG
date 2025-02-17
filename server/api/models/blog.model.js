@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
-    ownerId : {type: mongoose.Types.ObjectId , required: true} ,
+    ownerId : {type: String , required: true} ,
     title : {type : String, required : true},
     description : {type : String, required : true},
     likes : [],

@@ -2,26 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
-import { Eye, Bookmark, ThumbsUp, ArrowRightCircle } from "lucide-react";
+import { Eye, ThumbsUp, ArrowRightCircle } from "lucide-react";
 import { axiosIntance } from "@/lib/axiosInstant";
 import { SkeletonBox } from "./SkeletonBox";
-import useServer from "@/store/useServer";
 import toast from "react-hot-toast";
-
-// const blogs = [
-//   { id: 1, title: "The Future of AI", description: "How AI is shaping our future.", image: "https://source.unsplash.com/300x200/?technology,ai" },
-//   { id: 2, title: "Web3 Revolution", description: "Decentralized web explained.", image: "https://source.unsplash.com/300x200/?blockchain,crypto" },
-//   { id: 3, title: "React vs Vue", description: "Which frontend framework is better?", image: "https://source.unsplash.com/300x200/?javascript,react" },
-//   { id: 4, title: "The Rise of Tailwind", description: "Why TailwindCSS is taking over.", image: "https://source.unsplash.com/300x200/?css,design" },
-//   { id: 5, title: "Next.js Performance", description: "Why Next.js is great for SEO.", image: "https://source.unsplash.com/300x200/?coding,nextjs" },
-//   { id: 6, title: "Building APIs with Node.js", description: "Guide to building robust APIs.", image: "https://source.unsplash.com/300x200/?nodejs,backend" },
-//   { id: 7, title: "UI/UX Trends in 2025", description: "What’s next in UI design?", image: "https://source.unsplash.com/300x200/?design,ux" },
-//   { id: 8, title: "Machine Learning Basics", description: "Understanding ML models.", image: "https://source.unsplash.com/300x200/?machinelearning,ai" },
-//   { id: 9, title: "Data Science for Beginners", description: "Starting with data science.", image: "https://source.unsplash.com/300x200/?data,analytics" },
-//   { id: 10, title: "Cybersecurity in 2025", description: "How to stay secure online.", image: "https://source.unsplash.com/300x200/?security,hacking" },
-// ];
-
-
+import { useClerk, useUser } from "@clerk/clerk-react";
 
 export default function HeroSection() {
 
@@ -29,30 +14,39 @@ export default function HeroSection() {
   const [load, setLoad] = useState(true);
   const { page } = useParams();
 
-  useEffect(() => {
-    localStorage.setItem("loading", "hero");
-    const getAllBlogs = async () => {
-      try {
-        const allBlogs = await axiosIntance.get("/blog/allblogs");
-        if(!page) setBlogs(allBlogs.data.alls.slice(0, 10));
-        else setBlogs(allBlogs.data.alls.slice(10*(page-1), 10*page));
-      } catch (error) {
+  const {isSignedIn} = useUser();
 
-      }
-      finally {
-        setLoad(false);
-      }
+
+  const getAllBlogs = async () => {
+    try {
+      const allBlogs = await axiosIntance.get("/blog/allblogs");
+      if(!page) setBlogs(allBlogs.data.alls.slice(0, 10));
+      else setBlogs(allBlogs.data.alls.slice(10*(page-1), 10*page));
+    } catch (error) {
+
     }
+    finally {
+      setLoad(false);
+    }
+  }
+
+  useEffect(() => {
     getAllBlogs();
     if(page == undefined) return;
   }, [blogs])
 
   const handleLike = async (id) => {
-    try {
-      const req = await axiosIntance.post(`/blog/like/${id}`)
-      toast.success(req.data.message);
-    } catch (error) {
-      toast.error(error.response.data.message)
+    if(isSignedIn){
+      try {
+        const req = await axiosIntance.post(`/blog/like/${id}`)
+        toast.success(req.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message)
+      }
+    }
+    else {
+      toast.error("Login to like")
+      return;
     }
   }
 

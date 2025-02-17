@@ -1,10 +1,18 @@
+import App from '@/App';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-  const getLogin = localStorage.getItem("protected") ;
   return (
-    getLogin ? <Outlet/> : <Navigate to={"/login"} />
+    <>
+      <SignedIn>
+        <Outlet />
+      </SignedIn>
+      <SignedOut>
+        <Navigate to={"/"} />
+      </SignedOut>
+    </>
   )
 }
 

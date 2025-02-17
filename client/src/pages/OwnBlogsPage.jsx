@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { axiosIntance } from '@/lib/axiosInstant';
 import Navbar from '@/components/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const OwnBlogPage = () => {
     const [blogs, setBlogs] = useState([]);
-
+    const {uid} = useParams();
     useEffect(() => {
         fetchBlogs();
     }, [blogs]);
 
     const fetchBlogs = async () => {
         try {
-            const response = await axiosIntance.get('/blog/get-own');
+            const response = await axiosIntance.post('/blog/getown',{userId : uid});
             setBlogs(response.data.allBlogs);
         } catch (error) {
             console.error('Error fetching blogs:', error);

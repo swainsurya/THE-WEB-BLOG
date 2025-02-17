@@ -1,10 +1,12 @@
+import { clerkClient, getAuth } from "@clerk/express";
 import { blogModel } from "../models/blog.model.js";
+import mongoose, { Mongoose } from "mongoose";
 
 export const createBlog = async (req, res) => {
     const { title, description , img } = req.body;
-    const owner = req.user;
+    const {userId} = req.auth;
     try {
-        const newBlog = new blogModel({ ownerId: owner, title, description , img })
+        const newBlog = new blogModel({ ownerId: userId, title, description , img })
         await newBlog.save();
         res.status(200).json({
             message: "Blog created successfully",
@@ -14,15 +16,16 @@ export const createBlog = async (req, res) => {
     } catch (error) {
         res.status(404).json({
             message: "Internal server error",
-            status: false
+            status: false,
+            error
         })
     }
 }
 
 export const getAllOwnBlog = async (req, res) => {
-    const owner = req.user;
+    const {userId} = req.body
     try {
-        const allBlogs = await blogModel.find({ ownerId: owner }).sort({ createdAt: -1 });
+        const allBlogs = await blogModel.find({ownerId : userId})
         res.status(200).json({
             message: "Your all blogs are",
             status: true,
@@ -60,9 +63,9 @@ export const getByid = async(req , res) => {
 
 export const delOne = async (req, res) => {
     const { id } = req.params;
+    const {userId} = req.auth;
     try {
-        await blogModel.findByIdAndDelete(id);
-
+        await blogModel.findOneAndDelete({_id: id , ownerId : userId});
         res.status(200).json({
             message: "Blog deleted successfully",
             status: true
@@ -78,9 +81,9 @@ export const delOne = async (req, res) => {
 }
 
 export const delAll = async (req, res) => {
-    const owner = req.user
+    const {userId} = req.auth;
     try {
-        await blogModel.deleteMany({ ownerId: owner });
+        await blogModel.deleteMany({ ownerId: userId });
         res.status(200).json({
             message: "Blog Deleted successfully",
             status: true
@@ -104,7 +107,8 @@ export const delAllAdmin = async (req, res) => {
 export const updateBlog = async (req, res) => {
     const { id } = req.params;
     const { title, description , img } = req.body;
-    const updatedBlog = await blogModel.findByIdAndUpdate(id, { title, description , img }, { new: true })
+    const {userId} = req.auth;
+    const updatedBlog = await blogModel.findOneAndUpdate({_id: id, ownerId : userId}, { title, description , img }, { new: true })
     res.status(200).json({
         message: "Blog updated Success",
         success: true,
@@ -114,7 +118,7 @@ export const updateBlog = async (req, res) => {
 
 export const likePlus = async (req, res) => {
     const { id } = req.params;
-    const likedUser = req.user;
+    const likedUser = req.auth.userId ;
     try {
         const blog = await blogModel.findById(id);
 

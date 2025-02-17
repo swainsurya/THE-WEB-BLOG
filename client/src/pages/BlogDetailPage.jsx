@@ -13,12 +13,10 @@ export default function BlogDetailPage() {
   const [newBlogs , setNewBlogs] = useState([])
 
   useEffect(() => {
-    localStorage.setItem("loading" , "details");
     const getBlog = async () => {
       try {
         const req = await axiosIntance.get(`/blog/${id}`);
         setBlog(req.data.blog);
-
         // new blogs 
         const allBlogs = await axiosIntance.get("/blog/allblogs");
         const threeBlogs = allBlogs.data.alls.splice(0,3);

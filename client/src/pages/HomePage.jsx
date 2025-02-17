@@ -1,7 +1,5 @@
 import Footer from '@/components/Footer'
-import HeroSection from '@/components/HeroSection'
 import Navbar from '@/components/Navbar'
-import useServer from '@/store/useServer'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 

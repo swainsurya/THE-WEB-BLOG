@@ -1,21 +1,11 @@
-import jwt from "jsonwebtoken";
-
-export const verifyAUth = async(req , res , next) => {
-    const token = req.cookies.token ;
-    if(!token) {
-        return res.status(404).json({
-            message : "Unathorized User",
+const verifyAuth = async(req , res , next) => {
+    if(!req.auth.userId) {
+        return res.status(400).json({
+            message : "Unathorized user please login",
             success : false
         })
     }
-    const decode = jwt.decode(token, process.env.JWT_KEY);
-    req.user = decode.userId ;
-    next();
+    next()
 }
 
-export const adminCheck = async(req, res , next) => {
-    const {code} = req.body 
-    if(code == "7750") {
-        next();
-    }
-}
+export {verifyAuth}

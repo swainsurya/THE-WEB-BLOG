@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Navbar from "@/components/Navbar";
-import useServer from "@/store/useServer";
 import { axiosIntance } from "@/lib/axiosInstant";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { useClerk } from "@clerk/clerk-react";
 
 export default function BlogCreator() {
   const [title, setTitle] = useState("");
@@ -18,11 +18,10 @@ export default function BlogCreator() {
 
   // for edit 
   const [isEdit, setIsEdit] = useState(false);
-  const [blog, setBlog] = useState(null);
-
-  const { isLoggedIn, setCreated } = useServer()
 
   const { id } = useParams();
+  const {user} = useClerk();
+  console.log(user.id)
 
   const handlePreview = () => {
     setShowPreview(true);
@@ -37,7 +36,6 @@ export default function BlogCreator() {
   }
 
   useEffect(() => {
-    localStorage.setItem("loading", "create");
     if (!id) setIsEdit(false);
     else{
       setIsEdit(true)
@@ -56,7 +54,6 @@ export default function BlogCreator() {
       })
       console.log(req)
       toast.success(req.data.message)
-      setCreated();
     } catch (error) {
       toast.error("Sever error")
     }
@@ -114,7 +111,7 @@ export default function BlogCreator() {
             <div className="break-words overflow-auto text-ellipsis w-full">
               <h2 className="text-xl font-semibold break-words w-full">{title || "Blog Title"}</h2>
               <p className="mt-2 break-words w-full overflow-auto">{description || "Blog description will appear here..."}</p>
-              {imageUrl && imageUrl.startsWith("http") && (
+              {imageUrl  && (
                 <img src={imageUrl} alt={title} className="mt-4 w-full h-64 object-cover rounded-lg" onError={(e) => e.target.style.display = 'none'} />
               )}
             </div>

@@ -1,42 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // If using React Router
-import { Menu, X, Sun, Moon, Home,  InfoIcon, UserIcon } from "lucide-react";
+import { Menu, X, Sun, Moon, Home, InfoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import useServer from "@/store/useServer";
-import { axiosIntance } from "@/lib/axiosInstant";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
-import toast from "react-hot-toast";
+import { SignInButton, SignOutButton, SignUpButton, useClerk } from "@clerk/clerk-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [us, setUs] = useState(null);
-  const [login, setLogin] = useState(false) ;
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
-  const {isLoggedIn , loginCheck , setUser, user} = useServer() ;
-  const handleLogout = async() => {
-    await axiosIntance.post("/user/logout") ;
-    localStorage.removeItem("protected");
-    toast.success("Logout Success") ;
-    loginCheck();
-  }
 
-  useEffect(()=>{
-    loginCheck();
-    setUser();
-  },[user, isLoggedIn])
+  // clerk auth
 
-  useEffect(()=>{
-    const fetchLogin = async() => {
-      try {
-        const req = await fetch("https://the-web-blog-server.onrender.com/user/isloggedIn"); 
-        setLogin(true);
-      } catch (error) {
-        setLogin(false);
-      }
-    }
-  },[])
+  const { user } = useClerk()
 
   useEffect(() => {
     if (darkMode) {
@@ -69,24 +46,26 @@ export default function Navbar() {
             </Link>
 
             {/* User  */}
-
             {
-              login ? (
+              user ? (
                 <HoverCard>
                   <HoverCardTrigger>
                     <Button variant="destructive" className="rounded-full text-sm">
-                      <span>{user?.username?.substring(0,1)}</span>
+                      <span>{user?.username?.substring(0, 1).toUpperCase()}</span>
                     </Button>
                   </HoverCardTrigger>
                   <HoverCardContent className="flex flex-col items-center justify-center gap-2">
-                    <h3>HI {user?.username}</h3> 
+                    <h3>HI {user?.username}</h3>
                     <Link className="w-full" to={"/create"}><Button variant="ghost" className="w-full text-start">Create Blogs</Button></Link>
-                    <Link className="w-full" to={"/ownblogs"}><Button variant="ghost" className="w-full">Your Own Blogs</Button></Link>
-                    <Button onClick={handleLogout} variant="outline" className="w-full">Logout</Button>
+                    <Link className="w-full" to={`/ownblogs/${user.id}`}><Button variant="ghost" className="w-full">Your Own Blogs</Button></Link>
+                    <SignOutButton redirectUrl="/"><Button variant="outline" className="w-full">Logout</Button></SignOutButton>
                   </HoverCardContent>
                 </HoverCard>
               ) : (
-                <Link to={"/login"}><Button variant="outline">Login</Button></Link>
+                <>
+                  <SignInButton mode="modal"><Button variant="outline">Login</Button></SignInButton>
+                  <SignUpButton mode="modal"><Button variant="secondary" className="bg-green-600 hover:bg-green-700">Create New Account</Button></SignUpButton>
+                </>
               )
             }
 
@@ -118,21 +97,18 @@ export default function Navbar() {
               About
             </Link>
             {
-              isLoggedIn == "true" ? (
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <Button variant="destructive" className="rounded-full text-sm">
-                      <UserIcon size={21} />
-                    </Button>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="flex flex-col items-center justify-center gap-2">
-                    <Link className="w-full"><Button variant="ghost" className="w-full text-start">Create Blogs</Button></Link>
-                    <Link className="w-full"><Button variant="ghost" className="w-full">Your Own Blogs</Button></Link>
-                    <Button onClick={handleLogout} variant="outline" className="w-full">Logout</Button>
-                  </HoverCardContent>
-                </HoverCard>
+              user ? (
+                <div>
+                  <h3>HI {user.username}</h3>
+                  <Link className="w-full"><Button variant="ghost" className="w-full text-start" to={"/create"}>Create Blogs</Button></Link>
+                  <Link className="w-full" to={`/ownblogs/${user.id}`}><Button variant="ghost" className="w-full">Your Own Blogs</Button></Link>
+                  <SignOutButton redirectUrl="/"><Button variant="outline" className="w-full">Logout</Button></SignOutButton>
+                </div>
               ) : (
-                <Link to={"/login"}><Button variant="outline">Login</Button></Link>
+                <>
+                  <SignInButton mode="modal"><Button variant="outline">Login</Button></SignInButton>
+                  <SignUpButton mode="modal"><Button variant="secondary" className="bg-green-600 hover:bg-green-700">Create New Account</Button></SignUpButton>
+                </>
               )
             }
 
