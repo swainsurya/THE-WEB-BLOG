@@ -3,10 +3,9 @@ import { blogModel } from "../models/blog.model.js";
 import mongoose, { Mongoose } from "mongoose";
 
 export const createBlog = async (req, res) => {
-    const { title, description , img } = req.body;
-    const {userId} = req.auth;
+    const { title, description , img , ownerId } = req.body;
     try {
-        const newBlog = new blogModel({ ownerId: userId, title, description , img })
+        const newBlog = new blogModel({ ownerId, title, description , img })
         await newBlog.save();
         res.status(200).json({
             message: "Blog created successfully",

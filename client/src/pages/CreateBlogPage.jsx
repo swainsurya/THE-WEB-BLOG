@@ -20,6 +20,7 @@ export default function BlogCreator() {
   const [isEdit, setIsEdit] = useState(false);
 
   const { id } = useParams();
+  const {user} = useClerk() ;
 
   const handlePreview = () => {
     setShowPreview(true);
@@ -48,7 +49,8 @@ export default function BlogCreator() {
       const req = await axiosIntance.post("/blog/create", {
         title,
         description,
-        img: imageUrl
+        img: imageUrl,
+        ownerId : user.id
       })
       toast.success(req.data.message)
     } catch (error) {
