@@ -33,6 +33,14 @@ app.use(cookieParser());
 
 app.use("/api/blog", blogRoute);
 
+app.use((req, res, next) => {
+    if (req.originalUrl.includes("redirect")) {
+        return res.status(400).json({ message: "Redirect detected!" });
+    }
+    next();
+});
+
+
 app.get("/", (req, res) => {
     res.send("Server ready");
 });
